@@ -117,13 +117,9 @@
                                 <button class="btn btn-primary comment_submit" type="button">提交</button>
                             </div>
                         </div>
-
                         <hr/>
-
                         <div class="comment-content">
-
                         </div>
-
                     </div>
                 </div>
                 <?php
