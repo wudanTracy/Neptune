@@ -1,5 +1,3 @@
-
-
 <script src="js/jquery-2.1.4.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script>
@@ -11,7 +9,6 @@
     }
     $(document).ready(function () {
         $(".menu_items").on("click", function () {
-
             $(this).css("background-color", "#FFCC99").find("input[name='menu']").attr("checked", "checked");
             $(this).find(".glyphicon-ok").removeClass("hide");
             $(this).siblings(".menu_items").css("background-color", "#FFFFFF").find(".glyphicon-ok").addClass("hide");
@@ -24,24 +21,23 @@
         $(".collapse").hide();
         $(".comment").click(function (e) {
             e.stopPropagation();
-
             if ($(this).parents(".menu_items").next('.collapse').css("display") == 'none') {
                 show_cmt($(this).parents(".menu_items").attr("id"));
             }
-
             $(this).parents(".menu_items").next('.collapse').delay(50).slideToggle();
-
         });
         $(".well").click(function (e) {
             e.stopPropagation();
         });
-        $(".order_submit").click(function(){
+        $(".order_submit").click(function() {
             var dish_id = $("input:checked").parents(".menu_items").attr("id");
-            $.post("func-order.php", {
-                dish_id:dish_id
-            },function(data,status){
-                $(".content").load("orderFinish.php");
-            });
+            $.post("func-order.php", {dish_id: dish_id},
+                function (data, status) {
+                    $.post("orderFinish.php", {dish_id: dish_id},
+                        function (data, status) {
+                            $(".content").html(data);
+                        });
+                });
         });
         $(".comment_submit").click(function () {
             var dish_id = $(this).parents(".collapse").prev(".menu_items").attr("id");
@@ -58,7 +54,46 @@
                 })
             }
             $(this).parents(".collapse").find("textarea").val("");
-        })
+        });
+
+        $(".add_submit").hide();
+        $(".delete_submit").hide();
+        var state = 1;
+        $(".manage_submit").click(function(){
+            var order=$(".order_submit");
+            var manage=$(this);
+            if(state){
+                manage.animate({height:'100px',width:'100px',fontSize:'20px'},function(){
+                    manage.text("退出管理");
+                    $(".add_submit").show();
+                    $(".delete_submit").show();
+                });
+                order.animate({opacity:'0.1'},function(){
+                    order.hide();
+                })
+            }else{
+                manage.animate({height:'60px',width:'60px',fontSize:'14px'},function(){
+                    manage.text("管理");
+                    order.show();
+                    order.animate({opacity:'1.0'});
+                    $(".add_submit").hide();
+                    $(".delete_submit").hide();
+                });
+            }
+            state=!state;
+        });
+        $(".add_submit").click(function(){
+        });
+        $(".delete_submit").click(function(){
+            var dish_id=$("input:checked").parents(".menu_items").attr("id");
+            if(confirm("确认删除？")) {
+                $.post("delmenu.php", {
+                    dish_id: dish_id
+                }, function (data, status) {
+                    $(".content").load("menu.php");
+                });
+            };
+        });
     });
 </script>
 <div class="menu_title">
@@ -114,12 +149,16 @@
                                 <textarea name="content" rows="auto" cols="80" class="comment_form"></textarea>
                             </div>
                             <div class="col-md-2">
-                                <button class="btn btn-primary comment_submit" type="button">提交</button>
+                                <button class="btn btn-primary comment_submit" type="button" style="margin-top: 5px;">提交</button>
                             </div>
                         </div>
-                        <hr/>
+
+                        <hr style="margin-top: 18px;" class="style-two"/>
+
                         <div class="comment-content">
+
                         </div>
+
                     </div>
                 </div>
                 <?php
@@ -128,9 +167,11 @@
             ?>
         </div>
         <div class="col-md-2">
-            <button class="btn btn-warning order_submit" type="button" style="position: fixed;margin-top:200px;">
-                就吃这个了！
-            </button>
+            <button class="btn btn-warning order_submit" type="button">点餐</button>
+            <button class="btn btn-info manage_submit" type="button" style="margin-top:100px">管理</button>
+            <button class="btn btn-success add_submit" type="button" style="margin-top:230px;margin-left:18px;">添加</button>
+            <button class="btn btn-danger delete_submit" type="button" style="margin-top:310px;margin-left:18px;">删除</button>
+
         </div>
     </form>
 </div>
