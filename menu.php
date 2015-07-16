@@ -29,15 +29,20 @@
         $(".well").click(function (e) {
             e.stopPropagation();
         });
-        $(".order_submit").click(function() {
+        $(".order_submit").click(function () {
             var dish_id = $("input:checked").parents(".menu_items").attr("id");
-            $.post("func-order.php", {dish_id: dish_id},
-                function (data, status) {
-                    $.post("orderFinish.php", {dish_id: dish_id},
-                        function (data, status) {
-                            $(".content").html(data);
-                        });
-                });
+            if (!dish_id) {
+                alert("您未点餐哦~请选择菜品~")
+            } else {
+                $.post("func-order.php", {dish_id: dish_id},
+                    function (data, status) {
+                        $.post("orderFinish.php", {dish_id: dish_id},
+                            function (data, status) {
+                                $(".content").html(data);
+                            });
+                    });
+            }
+
         });
         $(".comment_submit").click(function () {
             var dish_id = $(this).parents(".collapse").prev(".menu_items").attr("id");
@@ -59,40 +64,45 @@
         $(".add_submit").hide();
         $(".delete_submit").hide();
         var state = 1;
-        $(".manage_submit").click(function(){
-            var order=$(".order_submit");
-            var manage=$(this);
-            if(state){
-                manage.animate({height:'100px',width:'100px',fontSize:'20px'},function(){
+        $(".manage_submit").click(function () {
+            var order = $(".order_submit");
+            var manage = $(this);
+            if (state) {
+                manage.animate({height: '100px', width: '100px', fontSize: '20px'}, function () {
                     manage.text("退出管理");
                     $(".add_submit").show();
                     $(".delete_submit").show();
                 });
-                order.animate({opacity:'0.1'},function(){
+                order.animate({opacity: '0.1'}, function () {
                     order.hide();
                 })
-            }else{
-                manage.animate({height:'60px',width:'60px',fontSize:'14px'},function(){
+            } else {
+                manage.animate({height: '60px', width: '60px', fontSize: '14px'}, function () {
                     manage.text("管理");
                     order.show();
-                    order.animate({opacity:'1.0'});
+                    order.animate({opacity: '1.0'});
                     $(".add_submit").hide();
                     $(".delete_submit").hide();
                 });
             }
-            state=!state;
+            state = !state;
         });
-        $(".add_submit").click(function(){
+        $(".add_submit").click(function () {
         });
-        $(".delete_submit").click(function(){
-            var dish_id=$("input:checked").parents(".menu_items").attr("id");
-            if(confirm("确认删除？")) {
-                $.post("delmenu.php", {
-                    dish_id: dish_id
-                }, function (data, status) {
-                    $(".content").load("menu.php");
-                });
-            };
+        $(".delete_submit").click(function () {
+            var dish_id = $("input:checked").parents(".menu_items").attr("id");
+            if (!dish_id) {
+                alert("您未选择要删除的菜品哦!");
+            } else {
+                if (confirm("确认删除？")) {
+                    $.post("delmenu.php", {
+                        dish_id: dish_id
+                    }, function (data, status) {
+                        $(".content").load("menu.php");
+                    });
+                }
+                ;
+            }
         });
     });
 </script>
@@ -149,7 +159,9 @@
                                 <textarea name="content" rows="auto" cols="80" class="comment_form"></textarea>
                             </div>
                             <div class="col-md-2">
-                                <button class="btn btn-primary comment_submit" type="button" style="margin-top: 5px;">提交</button>
+                                <button class="btn btn-primary comment_submit" type="button" style="margin-top: 5px;">
+                                    提交
+                                </button>
                             </div>
                         </div>
 
@@ -169,8 +181,10 @@
         <div class="col-md-2">
             <button class="btn btn-warning order_submit" type="button">点餐</button>
             <button class="btn btn-info manage_submit" type="button" style="margin-top:100px">管理</button>
-            <button class="btn btn-success add_submit" type="button" style="margin-top:230px;margin-left:18px;">添加</button>
-            <button class="btn btn-danger delete_submit" type="button" style="margin-top:310px;margin-left:18px;">删除</button>
+            <button class="btn btn-success add_submit" type="button" style="margin-top:230px;margin-left:18px;">添加
+            </button>
+            <button class="btn btn-danger delete_submit" type="button" style="margin-top:310px;margin-left:18px;">删除
+            </button>
 
         </div>
     </form>

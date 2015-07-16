@@ -6,18 +6,19 @@
  * Date: 2015/7/13
  * Time: 16:24
  */
-$dbms = 'mysql';     //Êı¾İ¿âÀàĞÍ
-$host = 'localhost'; //Êı¾İ¿âÖ÷»úÃû
-$dbName = 'neptune';    //Ê¹ÓÃµÄÊı¾İ¿â
-$user = 'root';      //Êı¾İ¿âÁ¬½ÓÓÃ»§Ãû
-$pass = '';          //¶ÔÓ¦µÄÃÜÂë
+$dbms = 'mysql';     //é€‰æ‹©æ•°æ®åº“
+$host = 'localhost'; //IPåœ°å€
+$dbName = 'neptune';    //æ•°æ®åº“åç§°
+$user = 'root';      //ç”¨æˆ·å
+$pass = 'baixing';          //ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 $dsn = "$dbms:host=$host;dbname=$dbName";
 
 
 try {
-    $dbh = new PDO($dsn, $user, $pass); //³õÊ¼»¯Ò»¸öPDO¶ÔÏó
-    // echo "³É¹¦Á¬½Ó!<br/>";
+    $dbh = new PDO($dsn, $user, $pass); //PDO
+    //echo "success!<br/>";
 } catch (PDOException $e) {
+    //echo "failed";
     die ("Error!: " . $e->getMessage() . "<br/>");
 }
 $dbh->query('set names utf8;');
