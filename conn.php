@@ -10,7 +10,7 @@ $dbms = 'mysql';     //选择数据库
 $host = 'localhost'; //IP地址
 $dbName = 'neptune';    //数据库名称
 $user = 'root';      //用户名
-$pass = 'baixing';          //��Ӧ������
+$pass = '';          //密码
 $dsn = "$dbms:host=$host;dbname=$dbName";
 
 
